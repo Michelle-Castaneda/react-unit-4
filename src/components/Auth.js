@@ -11,7 +11,15 @@ const Auth = () => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    
+    let body = {username, password}
+    axios
+      .post(register ? "/register" : "/login", body)
+      .then((res) => {
+        dispatch({type: "LOGIN", payload: res.data})
+      })
+      .catch((err) =>{
+        console.log(err)
+      })    
     console.log("submitHandler called");
   };
 
@@ -31,3 +39,10 @@ const Auth = () => {
 };
 
 export default Auth;
+
+
+
+//The dispatch function is used to send actions to the store to update the application's state. 
+//In this case, a "LOGIN" action is dispatched, with the data from the response (i.e., res.data) being sent as the payload.
+
+

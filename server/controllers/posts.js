@@ -1,24 +1,91 @@
+const {User} = require('./models/user')
+const {Post} = require('./models/post')
+
+
+addPost: async (req, res) => {
+    try {
+    const {title, content, status, userId} = req.body 
+    await Post.create({title, content, privateStatus: status, userId})
+    res.sendStatus(200)
+    } catch (error) {
+    console.log('error in addPost')
+        console.log(error)
+        res.sendStatus(400)
+    }}
+
+
 
 //create five functions: addPost, getAllPosts, getCurrentUserPosts, editPost, and deletePost.
 module.exports = {
     addPost: async (req, res) => {
-        console.log('addPost')
+        try {
+        const {title, content, status, userId} = req.body 
+        await Post.create({title, content, privateStatus: status, userId})
         res.sendStatus(200)
-    },
+        } catch (error) {
+        console.log('ERROR IN addPost')
+            console.log(error)
+            res.sendStatus(400)
+        }},
     getAllPosts: async (req, res) => {
-        console.log('getAllPosts')
-        res.sendStatus(200)    
+        try {
+            const posts = await Post.findAll({
+                where: {privateStatus: false},
+                include: [{
+                    model: User,
+                    required: true,
+                    attributes: [`username`]
+                }]
+            })
+            res.status(200).send(posts)
+        } catch (error) {
+            console.log('ERROR IN getAllPosts')
+            console.log(error)
+            res.sendStatus(400)
+        }   
     },    
     getCurrentUserPosts: async (req, res) => {
-        console.log('getCurrentUserPosts')
-        res.sendStatus(200)    
+        try {
+            const {userId} = req.params
+            const posts = await Post.findAll({
+                where: {userId: userId},
+                include: [{
+                    model: User,
+                    required: true,
+                    attributes: [`username`]
+                }]})
+            res.status(200).send(posts)
+        } catch (error) {
+            console.log('ERROR IN getCurrentUserPosts')
+            console.log(error)
+            res.sendStatus(400)
+        }
     },
     editPost: async (req, res) => {
-        console.log('editPost')
-        res.sendStatus(200)  
+        try {
+            const {id} = req.params
+            const {status} = req.body
+            await Post.update({privateStatus: status}, {where: {id: +id}
+            })
+            console.log('editPost')
+            res.sendStatus(200)  
+        }
+        catch(error) {
+            console.log('ERROR IN editPost')
+            console.log(error)
+            res.sendStatus(400)
+        }
     },
     deletePost: async (req, res) => {
+        try {
+            const {id} = req.params
+            await Post.destroy({where: {id: +id}})
         console.log('deletePost')
         res.sendStatus(200)     
     }
+    catch(error) {
+        console.log('ERROR IN deletePost')
+        console.log(error)
+        res.sendStatus(400)
 }
+    }

@@ -32,11 +32,11 @@ app.post('/register', register)
 app.post('/login', login)
 
 // create a get request to /posts, and link it to the getAllPosts function we created in the posts.js controller file.
-app.get('/posts, getAllPosts')
+app.get('/posts', getAllPosts)
 
 // create a get request to /userposts/:userId, and link it to the getCurrentUserPosts function we created in the posts.js controller file. 
 //For this endpoint, the userId is a variable that can be accessed with req.params.
-app.get('/userposts/:userId, getCurrentUserPosts')
+app.get('/userposts/:userId', getCurrentUserPosts)
 
 // create a post request to /posts, and link it to the addPost function we created in the posts.js controller file.
 app.post('/posts', isAuthenticated , addPost)
