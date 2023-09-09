@@ -1,26 +1,11 @@
-const {User} = require('./models/user')
-const {Post} = require('./models/post')
+const {User} = require('../models/user')
+const {Post} = require('../models/post')
 
-
-addPost: async (req, res) => {
-    try {
-    const {title, content, status, userId} = req.body 
-    await Post.create({title, content, privateStatus: status, userId})
-    res.sendStatus(200)
-    } catch (error) {
-    console.log('error in addPost')
-        console.log(error)
-        res.sendStatus(400)
-    }}
-
-
-
-//create five functions: addPost, getAllPosts, getCurrentUserPosts, editPost, and deletePost.
 module.exports = {
     addPost: async (req, res) => {
         try {
-        const {title, content, status, userId} = req.body 
-        await Post.create({title, content, privateStatus: status, userId})
+        let {title, content, status, userId} = req.body; 
+        await Post.create({title, content, userId, privateStatus: status });
         res.sendStatus(200)
         } catch (error) {
         console.log('ERROR IN addPost')
@@ -30,18 +15,17 @@ module.exports = {
     getAllPosts: async (req, res) => {
         try {
             const posts = await Post.findAll({
-                where: {privateStatus: false},
+                where: {privateStatus: 'false'},
                 include: [{
                     model: User,
                     required: true,
-                    attributes: [`username`]
-                }]
-            })
+                    attributes: [`username`],
+                },],
+            });
             res.status(200).send(posts)
         } catch (error) {
-            console.log('ERROR IN getAllPosts')
-            console.log(error)
-            res.sendStatus(400)
+                console.log('ERROR IN getAllPosts:', error.message);
+                res.status(400).send({ error: error.message });            
         }   
     },    
     getCurrentUserPosts: async (req, res) => {
@@ -89,3 +73,4 @@ module.exports = {
         res.sendStatus(400)
 }
     }
+}

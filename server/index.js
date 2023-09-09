@@ -12,13 +12,13 @@ const {User} = require('./models/user')
 const {Post} = require('./models/post')
 
 
-// 2. Middleware
-app.use(express.json())
-app.use(cors())
-
 
 const {getAllPosts, getCurrentUserPosts, addPost, editPost, deletePost} = require('./controllers/posts')
 const {register, login} = require('./controllers/auth')
+
+// 2. Middleware
+app.use(express.json())
+app.use(cors())
 
 //users can post as much as they would like and each post only has one author.
 User.hasMany(Post)

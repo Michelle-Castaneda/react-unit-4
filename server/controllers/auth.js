@@ -2,7 +2,7 @@ require('dotenv').config();
 const jwt = require('jsonwebtoken');
 const SECRET = process.env.SECRET;
 const bcrypt = require('bcryptjs');
-const User = require('../models/user');
+const {User} = require('../models/user');
 
 // Creates a JSON Web Token (JWT) with a payload containing the username and id, set to expire in 2 days.
 const createToken = (username, id) => {

@@ -18,6 +18,9 @@ const Auth = () => {
         dispatch({type: "LOGIN", payload: res.data})
       })
       .catch((err) =>{
+        if(err.response.data) {
+          alert(err.response.data)
+        }
         console.log(err)
       })    
     console.log("submitHandler called");
@@ -27,8 +30,8 @@ const Auth = () => {
     <main>
       <h1>Welcome!</h1>
       <form className="form auth-form" onSubmit={submitHandler}>
-        <input className="form-input" />
-        <input className="form-input" />
+      <input className="form-input" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
+        <input className="form-input" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
         <button className="form-btn">{register ? "Sign Up" : "Login"}</button>
       </form>
       <button className="form-btn" onClick={() => setRegister(!register)}>
