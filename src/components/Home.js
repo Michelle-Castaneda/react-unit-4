@@ -13,12 +13,12 @@ const Home = () => {
         axios.get('/posts')
         console.log(res.data)
         .then(res => {
-            // if (userId) {
-            //     const otherUsersPosts = res.data.filter(post => +userId !== post.userId)
-            //     setPosts(otherUsersPosts)
-            // } else {
+            if (userId) {
+                const otherUsersPosts = res.data.filter(post => +userId !== post.userId)
+                setPosts(otherUsersPosts)
+            } else {
                 setPosts(res.data);
-            // }
+            }
         })
         .catch(err => {
             console.log(err)
